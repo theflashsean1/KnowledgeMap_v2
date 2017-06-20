@@ -45,11 +45,11 @@ namespace kri_map{
         //Getters
         std::weak_ptr<Indiv> getIndiv(const std::size_t & id) const
         {
-            return this->domain_[id];
+            return this->domain_.at(id);
         }
-        std::weak_ptr<Indiv> getIndiv(const std::string & name) //TODO const
+        std::weak_ptr<Indiv> getIndiv(const std::string & name) const
         {
-            return this->indiv_by_name[name];
+            return this->indiv_by_name.at(name);
         }
 
         //Edit Individuals
@@ -75,6 +75,11 @@ namespace kri_map{
         bool I(const krl_map::OrF*);
         bool I(const krl_map::ExistF*);
         bool I(const krl_map::ForAllF*);
+
+        std::vector<std::weak_ptr<Indiv>> I(std::weak_ptr<krl_map::Term> term, std::string type);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::ConstExpr> const_expr);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Var> var);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Expr> expr);
 
         std::vector<std::weak_ptr<Indiv>> I(krl_map::Term*, std::string type);
         std::vector<std::weak_ptr<Indiv>> I(const krl_map::ConstExpr*);

@@ -15,12 +15,25 @@ namespace krl_map{
     class Term;
     class Var;
 
-
     class Formula{
     private:
+        std::size_t id_;
     public:
-        virtual Formula* derive(){return this;}
-        //
+        Formula()
+        {
+        }
+        virtual Formula* derive()
+        {
+            return this;
+        }
+        virtual std::string getType() const
+        {
+            return "Formula";
+        }
+        std::string  getID() const
+        {
+
+        }
     };
 
     class AtomF:public Formula{
@@ -28,9 +41,17 @@ namespace krl_map{
         std::weak_ptr<Pred> p_;
         std::vector<std::weak_ptr<Term>> terms_;
     public:
-        AtomF(const std::shared_ptr<Pred>& p, const std::vector<std::shared_ptr<Term>>& terms);
-        ~AtomF(){printf("AtomF desctructed");}
-        virtual AtomF* derive() override{ return this;}
+        AtomF(const std::weak_ptr<Pred>& p,
+              const std::vector<std::weak_ptr<Term>>& terms
+        );
+        ~AtomF()
+        {
+            printf("AtomF desctructed");
+        }
+        virtual AtomF* derive() override
+        {
+            return this;
+        }
     };
 
     class NegatedF:public Formula{

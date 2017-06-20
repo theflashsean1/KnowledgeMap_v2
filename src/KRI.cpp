@@ -36,32 +36,14 @@ KRI::KRI(const shared_ptr<krl_map::KRL>& krl,
     }
 };
 
-/*
-void KRI::updateIndivName(std::string from, std::string to){
-    for(shared_ptr<Indiv>& d:this->domain_){
-        if(d->getName()==from){
-            d->setName(to);
-            //Update Func maps related indiv names
-            for(const weak_ptr<FuncMap>& f_m:this->indiv_used_in_funcs_map_[from]){
-                f_m.lock()->updateIndivName(from, to);
-            }
-            this->indiv_used_in_funcs_map_[to] = std::move(this->indiv_used_in_funcs_map_[from]);
-            this->indiv_used_in_funcs_map_.erase(from);
-            //TODO Update Pred maps related indiv names (same thing as above)
-
-        }
-    }
+//////////////////////////////////////
+//           Indiv Edit             //
+//////////////////////////////////////
+void KRI::updateIndivName(std::string from, std::string to)
+{
+    std::string d_id = this->indiv_by_name[from].lock()->getID();
+    this->domain_[stoi(d_id)]->setName(to);
 }
-
-weak_ptr<Indiv> KRI::getIndiv(const string& d_name) const{
-    for(const auto & d:this->domain_){
-        if(d->getName() == d_name){
-            return d;
-        }
-    }
-    return nullptr;
-}
-*/
 
 //////////////////////////////////////
 //       Add mapping info           //
@@ -125,3 +107,33 @@ vector<weak_ptr<Indiv>> KRI::I(krl_map::Term* t, string type){
 }
 
 
+////////////////////////////////////
+// Smart ptr version I(term)      //
+////////////////////////////////////
+vector<weak_ptr<Indiv>> KRI::I(weak_ptr<krl_map::Term> term, std::string type)
+{
+    if (type=="ConstExpr"){
+        return this->I(dynamic_pointer_cast<krl_map::ConstExpr>(term.lock())); //IS THIS SAFE?
+    }else if(type=="Expr"){
+        return this->I(dynamic_pointer_cast<krl_map::Expr>(term.lock())); //IS THIS SAFE?
+    }else if(type=="Var"){
+        return this->I(dynamic_pointer_cast<krl_map::Var>(term.lock())); //
+    }
+}
+std::vector<std::weak_ptr<Indiv>> KRI::I(const std::weak_ptr<krl_map::ConstExpr> const_expr)
+{
+    return {this->const_id_to_indiv[const_expr.lock()->getID()]};
+}
+std::vector<std::weak_ptr<Indiv>> KRI::I(const std::weak_ptr<krl_map::Var> var){
+
+}
+std::vector<std::weak_ptr<Indiv>> KRI::I(const std::weak_ptr<krl_map::Expr> expr){
+    vector<weak_ptr<Indiv>> indivs;
+    for(weak_ptr<krl_map::Term>& term:expr.lock()->getTerms()){
+        vector<weak_ptr<Indiv>> temp_indivs = this->I(term, term.lock()->getType());
+        for(weak_ptr<Indiv>& d:temp_indivs){
+            indivs.push_back(d);
+        }
+    }
+    return (*(this->func_maps_[expr.lock()->getFuncId()]))[indivs];
+}

@@ -24,7 +24,7 @@ namespace krl_map{
         {
             return this;
         }
-        virtual std::string getType()
+        virtual std::string getType() const
         {
             return "Term";
         }
@@ -47,7 +47,7 @@ namespace krl_map{
         {
             std::cout<<"ConstExpr: "<< c_.lock()->getName() <<" destroyed"<<std::endl;
         }
-        virtual std::string getType()
+        virtual std::string getType() const override
         {
             return "ConstExpr";
         }
@@ -74,7 +74,7 @@ namespace krl_map{
             return this;
         }
 
-        virtual std::string getType() override
+        virtual std::string getType() const override
         {
             return "Var";
         }
@@ -98,7 +98,7 @@ namespace krl_map{
             Expr* temp = dynamic_cast<Expr *>(this);
             return temp;
         }
-        virtual std::string getType() override
+        virtual std::string getType() const override
         {
             return "Expr";
         }

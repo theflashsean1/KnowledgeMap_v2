@@ -17,7 +17,7 @@ namespace krl_map{
                 :name_(name), id_(id)
         {
         }
-        std::string getID() const //TODO CONST
+        std::string getID() const
         {
             return std::to_string(id_);
         }

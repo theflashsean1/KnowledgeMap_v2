@@ -33,16 +33,23 @@ namespace krl_map{
 
         void addTerm(std::string term_name,
                      std::string term_type,
-                     std::vector<std::string> content_keys);
+                     std::vector<std::string> content_keys
+        );
 
-        std::weak_ptr<Func> getFunc(const std::string name)
+        void addFormula(std::string formula_name,
+                        std::string formula_type,
+                        std::vector<std::string> content_keys
+        );
+
+
+        std::weak_ptr<Func> getFunc(const std::string name) const
         {
-            return (this->functions)[name];
+            return (this->functions).at(name);
         }
         //cautious about object slicing?
-        std::weak_ptr<Term> getTerm(const std::string name)
+        std::weak_ptr<Term> getTerm(const std::string name) const
         {
-            return (this->terms)[name];
+            return (this->terms).at(name);
         }
 
     };

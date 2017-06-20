@@ -18,17 +18,24 @@ int main() {
 
     language->addFunc("FatherOf",1);
 
+    ////////////Terms///////////////
     //term name, term type, content_keys
     language->addTerm("son_key", "ConstExpr", {"son"});
     language->addTerm("father_key", "ConstExpr", {"father"});
     language->addTerm("grandpa_key", "ConstExpr", {"grandpa"});
 
+    //For Expr,        term key       term type    content "KEYS"
     language->addTerm("father_of_son_key", "Expr", {"FatherOf", "son_key"});
     language->addTerm("father_of_father_key", "Expr", {"FatherOf", "father_of_son_key"});
 
 
+    ////////////Formulas/////////////
+    language->addPred("like", 2);
+
+
     //I(D, Phi, Psi, v)
-    //D = {A,B,C,E}
+
+    //For individuals, key names are exactly the same as their names
     kri_map::KRI semantics(
             language,
             {
@@ -68,6 +75,9 @@ int main() {
     weak_ptr<krl_map::Term> expr1 = language->getTerm("father_of_father_key");
     cout<<*(semantics.I(expr1.lock().get(),expr1.lock()->getType())[0].lock());
 
+    semantics.updateIndivName("albert","kitty");
+    semantics.updateIndivName("sean","kessel");
+    cout<<*(semantics.I(expr1, expr1.lock()->getType())[0].lock());
     //Edit Indiv
     //When Individual name changes,
     //1. The individual that func maps to automatically updated as it is a ptr.

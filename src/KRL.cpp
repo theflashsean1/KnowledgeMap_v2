@@ -35,7 +35,10 @@ void KRL::addPred(const std::string& predicate, const size_t& p_arity) {
     this->predicates[predicate] = p;
     ++(this->next_symbol_id);
 }
-void KRL::addTerm(std::string term_name, std::string term_type, std::vector<std::string> content_keys){
+void KRL::addTerm(std::string term_name,
+                  std::string term_type,
+                  std::vector<std::string> content_keys)
+{
     if(term_type == "ConstExpr"){
         this->terms[term_name] = make_shared<ConstExpr>(this->next_term_id,this->constants[content_keys[0]]);
     }
@@ -54,4 +57,11 @@ void KRL::addTerm(std::string term_name, std::string term_type, std::vector<std:
         return;
     }
     ++(this->next_term_id);
+}
+
+void addFormula(std::string formula_name,
+                std::string formula_type,
+                std::vector<std::string> content_keys)
+{
+
 }
