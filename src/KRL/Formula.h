@@ -9,9 +9,8 @@
 #include <memory>
 #include <iostream>
 #include <vector>
-
+#include "PrimitiveSymbol.h"
 namespace krl_map{
-    class Pred;
     class Term;
     class Var;
 
@@ -20,6 +19,10 @@ namespace krl_map{
         std::size_t id_;
     public:
         Formula()
+        {
+        }
+        Formula(size_t id)
+                :id_(id)
         {
         }
         virtual Formula* derive()
@@ -32,7 +35,7 @@ namespace krl_map{
         }
         std::string  getID() const
         {
-
+            return std::to_string(id_);
         }
     };
 
@@ -41,16 +44,29 @@ namespace krl_map{
         std::weak_ptr<Pred> p_;
         std::vector<std::weak_ptr<Term>> terms_;
     public:
-        AtomF(const std::weak_ptr<Pred>& p,
+        AtomF(const std::size_t & id,
+              const std::weak_ptr<Pred>& p,
               const std::vector<std::weak_ptr<Term>>& terms
         );
         ~AtomF()
         {
-            printf("AtomF desctructed");
+            std::cout << "AtomF: destroyed" << std::endl;
         }
         virtual AtomF* derive() override
         {
             return this;
+        }
+        virtual std::string getType() const override
+        {
+            return "AtomF";
+        }
+        std::string getPredId() const
+        {
+            return this->p_.lock()->getID();
+        }
+        std::vector<std::weak_ptr<Term>> getTerms() const
+        {
+            return this->terms_;
         }
     };
 

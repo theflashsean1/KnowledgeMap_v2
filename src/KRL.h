@@ -46,10 +46,20 @@ namespace krl_map{
         {
             return (this->functions).at(name);
         }
+        std::weak_ptr<Pred> getPred(const std::string name) const
+        {
+            return (this->predicates).at(name);
+        }
+
         //cautious about object slicing?
         std::weak_ptr<Term> getTerm(const std::string name) const
         {
             return (this->terms).at(name);
+        }
+
+        std::weak_ptr<Formula> getFormula(const std::string name) const
+        {
+            return (this->formulas).at(name);
         }
 
     };

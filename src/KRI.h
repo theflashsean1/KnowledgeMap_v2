@@ -63,7 +63,9 @@ namespace kri_map{
         void addFuncMap(const std::weak_ptr<krl_map::Func>& function,
                         const std::vector<std::weak_ptr<Indiv>>& src,
                         const std::vector<std::weak_ptr<Indiv>>& target);
-
+        void addPredMap(const std::weak_ptr<krl_map::Pred>& pred,
+                        const std::vector<std::weak_ptr<Indiv>>& src,
+                        const bool& target);
 
         void updateFuncMapName(std::string from, std::string to);
 
@@ -76,10 +78,13 @@ namespace kri_map{
         bool I(const krl_map::ExistF*);
         bool I(const krl_map::ForAllF*);
 
-        std::vector<std::weak_ptr<Indiv>> I(std::weak_ptr<krl_map::Term> term, std::string type);
-        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::ConstExpr> const_expr);
-        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Var> var);
-        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Expr> expr);
+        bool I(const std::weak_ptr<krl_map::Formula>& formula, const std::string& type);
+        bool I(const std::weak_ptr<krl_map::AtomF>& atom_f);
+
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Term>& term, const std::string& type);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::ConstExpr>& const_expr);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Var>& var);
+        std::vector<std::weak_ptr<Indiv>> I(const std::weak_ptr<krl_map::Expr>& expr);
 
         std::vector<std::weak_ptr<Indiv>> I(krl_map::Term*, std::string type);
         std::vector<std::weak_ptr<Indiv>> I(const krl_map::ConstExpr*);

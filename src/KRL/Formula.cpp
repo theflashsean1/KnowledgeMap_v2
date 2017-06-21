@@ -5,13 +5,18 @@
 #include "Formula.h"
 using namespace std;
 using namespace krl_map;
-AtomF::AtomF(const shared_ptr<Pred>& p, const std::vector<std::shared_ptr<Term>>& terms):p_(p){
-    printf("AtomF created");
-    for(const shared_ptr<Term>& t:terms){
-        std::weak_ptr<Term> temp = t;
-        this->terms_.push_back(std::move(temp));
+AtomF::AtomF(const std::size_t & id,
+      const std::weak_ptr<Pred>& p,
+      const std::vector<std::weak_ptr<Term>>& terms)
+        :Formula(id), p_(p)
+{
+    cout<<"AtomF: "<<p.lock()->getName() << " created"<<endl;
+    for(const weak_ptr<Term>& t:terms){
+        weak_ptr<Term> temp = t;
+        this->terms_.push_back(move(temp));
     }
 }
+
 shared_ptr<NegatedF> operator!(const shared_ptr<Formula> &f){
     printf("NegatedF created");
     return std::make_shared<NegatedF>(f);

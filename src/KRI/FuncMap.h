@@ -24,10 +24,17 @@ namespace kri_map{
         std::unordered_map<std::string, std::vector<std::weak_ptr<Indiv>>> map_;
 
     public:
-        FuncMap():map_({{}}){std::cout<<"FuncMap: created"<<std::endl;}
-        ~FuncMap(){std::cout<<"FuncMap destroyed"<<std::endl;}
+        FuncMap():map_({{}})
+        {
+            std::cout<<"FuncMap: created"<<std::endl;
+        }
+        ~FuncMap()
+        {
+            std::cout<<"FuncMap destroyed"<<std::endl;
+        }
 
-        void addMapping(const std::vector<std::weak_ptr<Indiv>>&,const std::vector<std::weak_ptr<Indiv>>&);
+        void addMapping(const std::vector<std::weak_ptr<Indiv>>& src,
+                        const std::vector<std::weak_ptr<Indiv>>& target);
         std::vector<std::weak_ptr<Indiv>> operator[](const std::vector<std::weak_ptr<Indiv>>&);
     };
 

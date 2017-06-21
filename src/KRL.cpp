@@ -59,9 +59,17 @@ void KRL::addTerm(std::string term_name,
     ++(this->next_term_id);
 }
 
-void addFormula(std::string formula_name,
+void KRL::addFormula(std::string formula_name,
                 std::string formula_type,
                 std::vector<std::string> content_keys)
 {
-
+    if(formula_type == "AtomF"){
+        vector<weak_ptr<Term>> terms;
+        for(auto it=content_keys.begin()+1; it!=content_keys.end(); ++it){
+            weak_ptr<Term>term = this->terms[*it];
+            terms.push_back(term);
+        }
+        this->formulas[formula_name] = make_shared<AtomF>(this->next_formula_id, this->predicates[content_keys[0]], terms);
+    }
+    ++(this->next_formula_id);
 }

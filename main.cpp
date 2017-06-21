@@ -31,6 +31,7 @@ int main() {
 
     ////////////Formulas/////////////
     language->addPred("like", 2);
+    language->addFormula("like_person1", "AtomF", {"like", "son_key", "father_key"});
 
 
     //I(D, Phi, Psi, v)
@@ -71,13 +72,22 @@ int main() {
     );
 
     //TODO State some formulas, and make I that satisfy those formulas
-
+    /*
     weak_ptr<krl_map::Term> expr1 = language->getTerm("father_of_father_key");
     cout<<*(semantics.I(expr1.lock().get(),expr1.lock()->getType())[0].lock());
 
     semantics.updateIndivName("albert","kitty");
     semantics.updateIndivName("sean","kessel");
     cout<<*(semantics.I(expr1, expr1.lock()->getType())[0].lock());
+    */
+
+    semantics.addPredMap(
+            language->getPred("like"),
+            {semantics.getIndiv("sean"), semantics.getIndiv("tom")},
+            true
+    );
+    weak_ptr<krl_map::Formula> f = language->getFormula("like_person1");
+    cout<<"T/F? "<<semantics.I(f, f.lock()->getType())<<endl;
     //Edit Indiv
     //When Individual name changes,
     //1. The individual that func maps to automatically updated as it is a ptr.
